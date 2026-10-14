@@ -144,6 +144,29 @@ section.blk { padding-block: 56px 0; }
 /* Page reset (fora do Claude o navegador aplica margem padrão) */
 html, body { margin: 0; padding: 0; }
 
+
+/* Grade colors (fill = --gc/--gt on light badges; --gd = tint legível sobre fundo escuro) */
+[data-g="A+"] { --gc: #0f5c2e; --gt: #fff; --gd: #4fd17e; }
+[data-g="A"]  { --gc: #1c7a3c; --gt: #fff; --gd: #6fd894; }
+[data-g="A−"] { --gc: #2e8f4c; --gt: #fff; --gd: #98e2b1; }
+[data-g="B+"] { --gc: #17467f; --gt: #fff; --gd: #6ea8ec; }
+[data-g="B"]  { --gc: #2563a8; --gt: #fff; --gd: #8dbcf1; }
+[data-g="B−"] { --gc: #3b7cc2; --gt: #fff; --gd: #b0d0f6; }
+[data-g="C+"] { --gc: #b88700; --gt: #1d1600; --gd: #f0c040; }
+[data-g="C"]  { --gc: #d6a91a; --gt: #1d1600; --gd: #f4cf66; }
+[data-g="C−"] { --gc: #e8c75a; --gt: #1d1600; --gd: #f8e19a; }
+[data-g="D"]  { --gc: #c9621a; --gt: #fff; --gd: #f5a25a; }
+[data-g="F"]  { --gc: #b3302a; --gt: #fff; --gd: #f2847c; }
+.grade[data-g] { background: var(--gc); color: var(--gt); }
+.lg[data-g], .feat-score .g[data-g], .rbadge .g[data-g] { color: var(--gd); }
+.feat-score .ladder span[data-g] { color: var(--gd); border-color: color-mix(in srgb, var(--gd) 45%, transparent); }
+.feat-score .ladder span.on[data-g] { background: var(--gc); color: var(--gt); border-color: var(--gc); }
+.pk small[data-g] { color: var(--gc); font-weight: 700; }
+.glegend { display: flex; flex-wrap: wrap; gap: 4px; margin: -8px 0 20px; }
+.glegend .grade { min-width: 34px; height: 24px; font-size: 13px; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pk small[data-g] { color: var(--gd); } }
+:root[data-theme="dark"] .pk small[data-g] { color: var(--gd); }
+
 /* Radar grades */
 .grade.sm { min-width: 30px; height: 22px; font-size: 13px; padding: 0 6px; vertical-align: middle; }
 .rg { display: grid; gap: 14px; margin: 14px 0 6px; padding: 14px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
@@ -228,6 +251,7 @@ html, body { margin: 0; padding: 0; }
 .pk small { font-weight: 500; color: var(--muted); }
 .pk[aria-pressed="true"] { background: var(--hero); color: var(--on-dark); border-color: var(--hero); }
 .pk[aria-pressed="true"] small { color: var(--on-dark-2); }
+.pk[aria-pressed="true"] small[data-g] { color: var(--gd); }
 .rhead { background: var(--hero); color: var(--on-dark); position: relative; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: end; padding: 30px 32px; }
 .rhead svg.bg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .rhead > div { position: relative; min-width: 0; }
@@ -696,6 +720,7 @@ function radarRank(R) {
   const G = R.radarGrades || []; if (!G.length) return "";
   return `<h3 class="sec-title" style="font-size:28px">Notas do radar</h3>
     <p class="sec-lede">Mesmos seis pilares e mesmas âncoras da carteira. "Provisória" quando o fundo tem menos de um ano ou falta dado; a nota tende a mudar com o histórico.</p>
+    ${gradeLegend()}
     <div class="tbl"><table class="rt" style="cursor:default"><thead><tr><th>ETF</th><th>Rating</th><th class="r">Nota 0–4</th>${D.pillars.map(p => `<th class="r">${esc(p.s)}</th>`).join("")}<th>Compara com</th></tr></thead>
     <tbody>${G.map(g => `<tr style="cursor:default"><td><span class="tk">${esc(g.t)}</span>${g.prov ? `<span class="sub">nota provisória</span>` : ""}</td><td><span class="grade">${g.letter}</span></td><td class="r num">${nf(g.gpa, 2)}</td>${D.pillars.map(p => `<td class="r num" style="font-weight:400">${nf(g.s[p.k], 1)}</td>`).join("")}<td>${refGrade(g.compareTo)}</td></tr>`).join("")}</tbody></table></div>
     <div style="height:36px"></div>`;
@@ -770,6 +795,12 @@ const h = (location.hash || "").slice(1).toUpperCase();
 if (D.etfs.some(e => e.t === h)) route("onepager", h, { scroll: false }); else route((location.hash || "#visao").slice(1), null, { scroll: false });
 })();
 
+/* ---------- Cores das notas: A verde, B azul, C amarelo, D laranja, F vermelho ---------- */
+function paintGrades(root) {
+  root.querySelectorAll(".grade, .lg, .feat-score .g, .rbadge .g, .pk small, .feat-score .ladder span, .gl").forEach(el => { if (!el.dataset.g) { const g = el.textContent.trim().replace("-", "−"); if (/^[A-DF][+−]?$/.test(g)) el.dataset.g = g; } });
+}
+function gradeLegend() { return `<div class="glegend">${["A+", "A", "A−", "B+", "B", "B−", "C+", "C", "C−", "D", "F"].map(l => `<span class="grade gl">${l}</span>`).join("")}</div>`; }
+
 /* ---------- Mobile: tabelas viram cartões ---------- */
 function stackTables(root) {
   root.querySelectorAll("table.rt, table.mt, table.st:not(.heat)").forEach(t => {
@@ -786,8 +817,9 @@ function stackTables(root) {
   });
 }
 let stkQ = 0;
-new MutationObserver(() => { if (!stkQ) stkQ = requestAnimationFrame(() => { stkQ = 0; stackTables(document.body); }); }).observe(document.body, { childList: true, subtree: true });
+new MutationObserver(() => { if (!stkQ) stkQ = requestAnimationFrame(() => { stkQ = 0; stackTables(document.body); paintGrades(document.body); }); }).observe(document.body, { childList: true, subtree: true });
 stackTables(document.body);
+paintGrades(document.body);
 
 </script>
 
