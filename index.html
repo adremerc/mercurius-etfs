@@ -201,36 +201,23 @@ html, body { margin: 0; padding: 0; }
 .cdel { font: inherit; font-size: 18px; line-height: 1; background: transparent; border: 1px solid var(--rule-strong); color: var(--ink-2); width: 28px; height: 28px; cursor: pointer; }
 .cadd { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 12px; }
 .cadd select { font: inherit; font-size: 14px; color: var(--ink); background: var(--bg); border: 1px solid var(--rule-strong); padding: 6px 8px; max-width: 100%; }
-/* Por que cada nota */
-#whyPick { margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.why { background: var(--warm); padding: 22px 24px; }
-.whyhead { display: flex; justify-content: space-between; gap: 18px; align-items: flex-start; }
-.whyhead h3 { margin: 4px 0 0; font-family: var(--font-head); font-weight: 400; font-size: 22px; }
-.whyscore { display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 88px; }
-.whyscore .grade { min-width: 64px; height: 48px; font-size: 26px; transition: transform .35s ease; }
-.whyscore .grade.on { transform: scale(1.08); }
-.whyscore .num { font-family: var(--font-head); font-size: 22px; font-variant-numeric: tabular-nums; }
-.whyscore .d { font-size: 12px; color: var(--muted); }
-.whystack { position: relative; display: flex; gap: 2px; height: 34px; margin: 18px 0 6px; background: color-mix(in srgb, var(--ink) 7%, transparent); }
-.whystack i { display: block; height: 100%; width: 0; background: var(--bronze); position: relative; overflow: hidden; transition: width .55s cubic-bezier(.2,.7,.2,1); transition-delay: calc(var(--d) * .65s); }
-.whystack i:nth-child(even) { background: color-mix(in srgb, var(--bronze) 78%, #000); }
-.whystack i b { position: absolute; left: 6px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: 600; color: #fff; white-space: nowrap; opacity: 0; transition: opacity .3s; transition-delay: calc(var(--d) * .65s + .4s); }
-.whymax { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); font-size: 11px; color: var(--muted); }
-.why.go .whystack i { width: var(--w); }
-.why.go .whystack i b { opacity: 1; }
-.whylist { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 4px; }
-.whylist li { display: grid; grid-template-columns: 170px 220px minmax(0, 1fr); gap: 16px; align-items: start; padding: 10px 0; border-top: 1px solid var(--rule); opacity: .25; transform: translateY(6px); transition: opacity .4s, transform .4s; transition-delay: calc(var(--d) * .65s); }
-.why.go .whylist li { opacity: 1; transform: none; }
-.whylist .wl b { display: block; font-size: 15px; } .whylist .wl span { font-size: 12px; color: var(--muted); }
-.whylist .wb { display: grid; grid-template-columns: minmax(0, 1fr) 40px 48px; gap: 8px; align-items: center; font-size: 13.5px; }
-.whylist .wbar { height: 10px; background: color-mix(in srgb, var(--ink) 9%, transparent); position: relative; }
-.whylist .wbar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--bronze); transition: width .6s ease; transition-delay: calc(var(--d) * .65s); }
-.why.go .whylist .wbar i { width: var(--v); }
-.whylist .wc { color: var(--good); font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
-.whylist p { margin: 0; font-size: 14px; color: var(--ink-2); }
-.why.now * { transition: none !important; }
-@media (max-width: 860px) { .whylist li { grid-template-columns: 1fr; gap: 6px; } .why { padding: 18px 16px; } }
-@media (prefers-reduced-motion: reduce) { .why * { transition: none !important; } }
+/* Por quê da nota (discreto, dentro do quadro de rating) */
+.whyb { font: inherit; font-size: 12px; color: var(--link); background: none; border: 0; padding: 2px 4px; margin-left: 4px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.whyb:focus-visible { outline: 2px solid var(--bronze); outline-offset: 2px; }
+.rt tr.whyrow, .rt tr.whyrow:hover td { cursor: default; background: transparent; }
+.rt tr.whyrow td { padding: 4px 12px 16px; background: var(--warm); }
+.wmini { display: grid; gap: 6px; max-width: 980px; opacity: 0; transition: opacity .25s ease; }
+.whyrow.on .wmini { opacity: 1; }
+.wm { display: grid; grid-template-columns: 112px 120px 40px minmax(0, 1fr); gap: 12px; align-items: center; font-size: 13px; }
+.wm .wn { font-weight: 600; } .wm .wn small { font-weight: 400; color: var(--muted); margin-left: 2px; }
+.wm .wt { height: 4px; background: color-mix(in srgb, var(--ink) 10%, transparent); position: relative; }
+.wm .wt i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--bronze); transition: width .5s ease; transition-delay: calc(var(--i) * 60ms); }
+.whyrow.on .wm .wt i { width: var(--v); }
+.wm .wv { text-align: right; color: var(--ink-2); }
+.wm .wr { color: var(--ink-2); }
+.wf { margin: 6px 0 0; font-size: 13px; color: var(--ink-2); }
+@media (max-width: 760px) { .wm { grid-template-columns: 96px 110px 40px; } .wm .wr { grid-column: 1 / -1; margin-bottom: 4px; } }
+@media (prefers-reduced-motion: reduce) { .wmini, .wm .wt i { transition: none; } }
 
 /* Ranking geral e Em análise */
 .rt tr.incart td { background: color-mix(in srgb, var(--bronze) 9%, transparent); }
@@ -587,17 +574,33 @@ function renderOverview() {
     <p class="sec-lede">Clique numa linha para abrir o relatório.</p>
     <div class="tbl"><table class="rt"><thead><tr><th>ETF</th><th>Rating</th><th class="r">Nota 0–4</th><th>Decisão</th><th>Teste da tese</th><th>Principal ponto</th><th>Alternativa</th></tr></thead>
     <tbody id="ovRows">${D.etfs.map(e => `<tr data-t="${e.t}" tabindex="0" aria-label="Abrir relatório do ${e.t}">
-      <td><span class="tk">${e.t}</span><span class="sub">${esc(e.leg)}</span></td><td><span class="grade">${e.letter}</span></td><td class="r num">${nf(e.gpa, 2)}</td>
+      <td><span class="tk">${e.t}</span><span class="sub">${esc(e.leg)}</span></td><td><span class="grade">${e.letter}</span> <button class="whyb" type="button" data-why="${e.t}" aria-expanded="false">por quê?</button></td><td class="r num">${nf(e.gpa, 2)}</td>
       <td><span class="tag ${e.decision.tone}">${esc(e.decision.l)}</span></td>
       <td><span style="display:inline-flex;gap:3px">${D.thesisTests.map(t => mk(e.thesis[t.k][0], t.n + ": " + e.thesis[t.k][1])).join("")}</span></td>
-      <td>${esc(e.mainIssue)}</td><td>${e.alt.t} <span style="color:var(--muted)">${e.alt.letter} · ${nf(e.alt.gpa, 2)}</span></td></tr>`).join("")}</tbody></table></div>
+      <td>${esc(e.mainIssue)}</td><td>${e.alt.t} <span style="color:var(--muted)">${e.alt.letter} · ${nf(e.alt.gpa, 2)}</span></td></tr>${whyRow(e)}`).join("")}</tbody></table></div>
     <div class="legend"><span>${mk("ok")} passa</span><span>${mk("at")} passa com ressalva</span><span>${mk("no")} não passa</span><span style="color:var(--muted)">Testes: ${D.thesisTests.map(t => esc(t.n)).join(" · ")}</span></div>
   </section>`;
   $("#v-visao").querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => route(b.dataset.go)));
   $("#v-visao").querySelectorAll("button[data-t]").forEach(b => b.addEventListener("click", () => route("onepager", b.dataset.t)));
   const tb = $("#ovRows");
-  tb.addEventListener("click", ev => { const tr = ev.target.closest("tr[data-t]"); if (tr) route("onepager", tr.dataset.t); });
+  tb.addEventListener("click", ev => {
+    const b = ev.target.closest(".whyb");
+    if (b) { const r = tb.querySelector(`tr.whyrow[data-w="${b.dataset.why}"]`), open = r.hidden; r.hidden = !open; b.setAttribute("aria-expanded", String(open)); b.textContent = open ? "fechar" : "por quê?"; if (open) { void r.offsetWidth; setTimeout(() => r.classList.add("on"), 20); } else r.classList.remove("on"); return; }
+    const rep = ev.target.closest("[data-rep]"); if (rep) { ev.preventDefault(); route("onepager", rep.dataset.rep); return; }
+    if (ev.target.closest("tr.whyrow")) return;
+    const tr = ev.target.closest("tr[data-t]"); if (tr) route("onepager", tr.dataset.t);
+  });
   tb.addEventListener("keydown", ev => { if (ev.key === "Enter") { const tr = ev.target.closest("tr[data-t]"); if (tr) route("onepager", tr.dataset.t); } });
+}
+
+function whyRow(e) {
+  const first = s => { const m = String(s || "").match(/^.*?[.;](\s|$)/); return (m ? m[0] : String(s || "")).trim(); };
+  return `<tr class="whyrow" data-w="${e.t}" hidden><td colspan="7"><div class="wmini">${D.pillars.map((p, i) => `<div class="wm" style="--i:${i}">
+    <span class="wn">${esc(p.s)} <small>${p.w}%</small></span>
+    <span class="wt"><i style="--v:${(e.scores[p.k] / 4 * 100).toFixed(1)}%"></i></span>
+    <span class="wv num">${nf(e.scores[p.k], 2)}</span>
+    <span class="wr">${esc(first((e.scoreNotes || {})[p.k]))}</span></div>`).join("")}
+    <p class="wf">Média ponderada dos seis pilares: <b>${nf(e.gpa, 2)} = ${e.letter}</b>. <a href="#" data-rep="${e.t}">Ver relatório completo</a></p></div></td></tr>`;
 }
 
 /* ---------- Charts ---------- */
@@ -883,56 +886,6 @@ function renderBuy() {
   });
 }
 
-/* ---------- Por que cada nota (animação da carteira) ---------- */
-const WHY = { t: null, timer: null };
-function whyPanel(t) {
-  const e = D.etfs.find(x => x.t === t);
-  const segs = D.pillars.map(p => ({ p, v: e.scores[p.k], c: e.scores[p.k] * p.w / 100 }));
-  return `<div class="why" data-t="${t}">
-    <div class="whyhead"><div><p class="eyebrow">${esc(e.leg)}</p><h3><span class="tk">${e.t}</span>: ${esc(e.headline)}</h3></div>
-      <div class="whyscore"><span class="grade" data-final="${e.letter}">—</span><span class="num" id="whyNum">0,00</span><span class="d">de 4,00</span></div></div>
-    <div class="whystack" aria-hidden="true">${segs.map((s, i) => `<i style="--w:${(s.c / 4 * 100).toFixed(2)}%;--d:${i}"><b>${esc(s.p.s)}</b></i>`).join("")}<span class="whymax">4,00</span></div>
-    <ol class="whylist">${segs.map((s, i) => `<li style="--d:${i}">
-      <div class="wl"><b>${esc(s.p.n)}</b><span>peso ${s.p.w}%</span></div>
-      <div class="wb"><span class="wbar"><i style="--v:${(s.v / 4 * 100).toFixed(1)}%"></i></span><span class="num">${nf(s.v, 2)}</span><span class="wc">+${nf(s.c, 2)}</span></div>
-      <p>${esc((e.scoreNotes || {})[s.p.k] || "")}</p></li>`).join("")}</ol>
-    <p class="note">Cada pilar recebe nota de 0 a 4 e entra na média com o seu peso. A soma das contribuições é a nota final: <b>${nf(e.gpa, 2)} = ${e.letter}</b>.</p>
-  </div>`;
-}
-function playWhy() {
-  const box = $("#whyBox"); if (!box) return;
-  const el = box.querySelector(".why"); const e = D.etfs.find(x => x.t === WHY.t);
-  el.classList.remove("go"); void el.offsetWidth;
-  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const num = el.querySelector("#whyNum"), g = el.querySelector(".whyscore .grade");
-  clearInterval(WHY.timer);
-  const finish = () => { num.textContent = nf(e.gpa, 2); g.textContent = e.letter; g.dataset.g = e.letter.replace("-", "−"); g.classList.add("on"); };
-  g.textContent = "—"; delete g.dataset.g; g.classList.remove("on");
-  if (reduce) { el.classList.add("go", "now"); finish(); return; }
-  requestAnimationFrame(() => el.classList.add("go"));
-  const contrib = D.pillars.map(p => e.scores[p.k] * p.w / 100); let i = 0, acc = 0;
-  WHY.timer = setInterval(() => { if (i >= contrib.length) { clearInterval(WHY.timer); finish(); return; } acc += contrib[i++]; num.textContent = nf(acc, 2); g.textContent = letterOf(acc); g.dataset.g = letterOf(acc); }, 650);
-}
-function showWhy(t) {
-  WHY.t = t; $("#whyBox").innerHTML = whyPanel(t);
-  document.querySelectorAll("#whyPick .pk").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.t === t)));
-  playWhy();
-}
-function renderWhy() {
-  const first = D.etfs[0].t;
-  $("#v-visao").insertAdjacentHTML("beforeend", `<section class="blk wrap" id="whySec">
-    <h2 class="sec-title">Por que cada nota</h2>
-    <p class="sec-lede">Escolha um ETF da carteira e veja a nota sendo montada, pilar por pilar, com o motivo de cada um.</p>
-    <div class="picker" id="whyPick" role="group" aria-label="Escolher ETF">${D.etfs.map(x => `<button class="pk" type="button" data-t="${x.t}" aria-pressed="false">${x.t} <small>${x.letter}</small></button>`).join("")}<button class="uchip" id="whyReplay" type="button">Rever animação</button></div>
-    <div id="whyBox"></div></section>`);
-  $("#whyPick").addEventListener("click", ev => { const b = ev.target.closest(".pk"); if (b) showWhy(b.dataset.t); if (ev.target.id === "whyReplay") playWhy(); });
-  WHY.t = first; $("#whyBox").innerHTML = whyPanel(first);
-  document.querySelector(`#whyPick .pk[data-t="${first}"]`).setAttribute("aria-pressed", "true");
-  let played = false;
-  const check = () => { if (played) return; const v = $("#v-visao"); if (v.hidden) return; const r = $("#whyBox").getBoundingClientRect(); if (r.top < innerHeight * 0.75 && r.bottom > 0) { played = true; removeEventListener("scroll", check); playWhy(); } };
-  addEventListener("scroll", check, { passive: true }); setTimeout(check, 300);
-}
-
 /* gráfico nota x taxa anual (só ETFs com taxa conhecida) */
 function scatterHTML() {
   const P = (D.allGrades || []).filter(x => x.cost != null && (RK.g === "all" || x.group === RK.g) && (RK.b === "all" || x.base === RK.b));
@@ -1100,7 +1053,7 @@ function renderMethod() {
 
 $("#disc").textContent = D.disclaimer;
 $("#docs").innerHTML = D.docs.map(d => `<a href="${DRIVE(d[1])}" target="_blank" rel="noopener">${esc(d[0])}</a>`).join("") + D.etfs.map(e => `<a href="${DRIVE(e.doc)}" target="_blank" rel="noopener">${e.t}</a>`).join("");
-renderOverview(); renderWhy(); renderBuy(); renderMonitor(); renderStress(); if (typeof renderRadar === "function") { renderRadar(); bindScatter(); } renderAnalise(); renderMethod();
+renderOverview(); renderBuy(); renderMonitor(); renderStress(); if (typeof renderRadar === "function") { renderRadar(); bindScatter(); } renderAnalise(); renderMethod();
 const h = (location.hash || "").slice(1).toUpperCase();
 if (D.etfs.some(e => e.t === h)) route("onepager", h, { scroll: false }); else route((location.hash || "#visao").slice(1), null, { scroll: false });
 })();
